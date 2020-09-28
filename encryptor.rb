@@ -8,18 +8,14 @@ class Encryptor
   end
 
   def encrypt(string, rotation)
-    letter = string.split('')
-    cipher_for_rotation = cipher(rotation)
-    cipher_for_rotation[letter]
-    letter.map { |letter| cipher_for_rotation[letter] }.join
+    letters = string.split('')
+    letters.map { |letter| cipher(rotation)[letter] }.join
   end
 
   # Расшифровщик
   def decrypt(string, rotation)
-    letter = string.split('')
-    cipher_for_rotation = cipher(rotation).invert
-    cipher_for_rotation[letter]
-    letter.map { |letter| cipher_for_rotation[letter] }.join
+    letters = string.split('')
+    letters.map { |letter| cipher(rotation).invert[letter] }.join
   end
 
   # Шифровальщик файла 
@@ -37,7 +33,7 @@ class Encryptor
    # Расшифровщик файла      
     def decrypt_file(filename, rotation)
       file = File.open(filename, 'r') { |f| f.read }
-      file_decrypt = decrypt(file, rotation )
+      file_decrypt = decrypt(file, rotation)
       newfile = 'secret.txt.decrypted'
       filename.gsub(filename, newfile)
       File.open(newfile, 'w') { |f| f.write(file_decrypt) }
@@ -46,5 +42,7 @@ class Encryptor
 end
 
 e = Encryptor.new
+puts e.encrypt('secret', 11)
+puts e.decrypt('#pn"p$', 11)
 puts e.encrypt_file('secret.txt', 11)
 puts e.decrypt_file('secret.txt.encrypted', 11)
